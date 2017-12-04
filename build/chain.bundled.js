@@ -65,7 +65,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 1178);
+/******/ 	return __webpack_require__(__webpack_require__.s = 1219);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -84,21 +84,28 @@ module.exports = require("fs");
 
 /***/ }),
 
-/***/ 10:
+/***/ 11:
 /***/ (function(module, exports) {
 
-module.exports = require("os");
+module.exports = require("stream");
 
 /***/ }),
 
-/***/ 1178:
+/***/ 12:
+/***/ (function(module, exports) {
+
+module.exports = require("http");
+
+/***/ }),
+
+/***/ 1219:
 /***/ (function(module, exports, __webpack_require__) {
 
 
-var IPC = __webpack_require__(190).IPC;
-var TestRPC = __webpack_require__(189);
+var IPC = __webpack_require__(200).IPC;
+var TestRPC = __webpack_require__(204);
 var path = __webpack_require__(0);
-var debug = __webpack_require__(193);
+var debug = __webpack_require__(203);
 
 /*
  * Loggers
@@ -413,22 +420,15 @@ supervisor.start();
 
 /***/ }),
 
-/***/ 12:
-/***/ (function(module, exports) {
-
-module.exports = require("assert");
-
-/***/ }),
-
-/***/ 123:
+/***/ 124:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-let EventPubSub = __webpack_require__(76);
+let EventPubSub = __webpack_require__(74);
 if(process.version[1]>5){
-    EventPubSub = __webpack_require__(225);
+    EventPubSub = __webpack_require__(224);
 }
 
 module.exports=EventPubSub;
@@ -436,7 +436,7 @@ module.exports=EventPubSub;
 
 /***/ }),
 
-/***/ 126:
+/***/ 128:
 /***/ (function(module, exports) {
 
 function Message() {
@@ -517,11 +517,11 @@ module.exports=Message;
 /***/ 13:
 /***/ (function(module, exports) {
 
-module.exports = require("stream");
+module.exports = require("events");
 
 /***/ }),
 
-/***/ 130:
+/***/ 132:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -533,7 +533,7 @@ module.exports = require("stream");
  * @module entities
  */
 
-const os = __webpack_require__(10);
+const os = __webpack_require__(7);
 
 /**
  * @class Defaults
@@ -609,13 +609,13 @@ module.exports=Defaults;
 
 /***/ }),
 
-/***/ 131:
+/***/ 133:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-const Defaults = __webpack_require__(130);
+const Defaults = __webpack_require__(132);
 
 class Parser{
   constructor(config){
@@ -649,14 +649,7 @@ module.exports=Parser;
 
 /***/ }),
 
-/***/ 14:
-/***/ (function(module, exports) {
-
-module.exports = require("events");
-
-/***/ }),
-
-/***/ 141:
+/***/ 142:
 /***/ (function(module, exports, __webpack_require__) {
 
 
@@ -672,7 +665,7 @@ exports.coerce = coerce;
 exports.disable = disable;
 exports.enable = enable;
 exports.enabled = enabled;
-exports.humanize = __webpack_require__(78);
+exports.humanize = __webpack_require__(93);
 
 /**
  * Active `debug` instances.
@@ -888,19 +881,26 @@ function coerce(val) {
 
 /***/ }),
 
-/***/ 144:
+/***/ 148:
+/***/ (function(module, exports) {
+
+module.exports = require("dgram");
+
+/***/ }),
+
+/***/ 150:
 /***/ (function(module, exports) {
 
 module.exports = require("timers");
 
 /***/ }),
 
-/***/ 172:
+/***/ 178:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var hasFlag = __webpack_require__(231);
+var hasFlag = __webpack_require__(229);
 
 var support = function (level) {
 	if (level === 0) {
@@ -975,19 +975,58 @@ module.exports = process && support(supportLevel);
 
 /***/ }),
 
-/***/ 186:
-/***/ (function(module, exports) {
+/***/ 200:
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = require("dgram");
+"use strict";
+
+
+const IPC = __webpack_require__(242);
+
+class IPCModule extends IPC{
+    constructor(){
+        super();
+        //include IPC to make extensible
+        Object.defineProperty(
+            this,
+            'IPC',
+            {
+                enumerable:true,
+                writable:false,
+                value:IPC
+            }
+        )
+    }
+}
+
+module.exports=new IPCModule;
+
 
 /***/ }),
 
-/***/ 189:
+/***/ 203:
+/***/ (function(module, exports, __webpack_require__) {
+
+/**
+ * Detect Electron renderer process, which is node, but we should
+ * treat as a browser.
+ */
+
+if (typeof process === 'undefined' || process.type === 'renderer') {
+  module.exports = __webpack_require__(269);
+} else {
+  module.exports = __webpack_require__(270);
+}
+
+
+/***/ }),
+
+/***/ 204:
 /***/ (function(module, exports, __webpack_require__) {
 
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(true)
-		module.exports = factory(__webpack_require__(3), __webpack_require__(13), __webpack_require__(47), __webpack_require__(14), __webpack_require__(7), __webpack_require__(12), __webpack_require__(1), __webpack_require__(0), __webpack_require__(26), __webpack_require__(8), __webpack_require__(46), __webpack_require__(34), __webpack_require__(10), __webpack_require__(144));
+		module.exports = factory(__webpack_require__(3), __webpack_require__(11), __webpack_require__(44), __webpack_require__(13), __webpack_require__(4), __webpack_require__(9), __webpack_require__(1), __webpack_require__(0), __webpack_require__(12), __webpack_require__(5), __webpack_require__(43), __webpack_require__(28), __webpack_require__(7), __webpack_require__(150));
 	else if(typeof define === 'function' && define.amd)
 		define("TestRPC", ["util", "stream", "buffer", "events", "crypto", "assert", "fs", "path", "http", "url", "child_process", "https", "os", "timers"], factory);
 	else if(typeof exports === 'object')
@@ -1961,7 +2000,7 @@ function objectToString(o) {
 /* 4 */
 /***/ (function(module, exports) {
 
-module.exports = __webpack_require__(13);
+module.exports = __webpack_require__(11);
 
 /***/ }),
 /* 5 */
@@ -15319,7 +15358,7 @@ module.exports = function() {
 /* 17 */
 /***/ (function(module, exports) {
 
-module.exports = __webpack_require__(47);
+module.exports = __webpack_require__(44);
 
 /***/ }),
 /* 18 */
@@ -15583,7 +15622,7 @@ module.exports = {
 /* 19 */
 /***/ (function(module, exports) {
 
-module.exports = __webpack_require__(14);
+module.exports = __webpack_require__(13);
 
 /***/ }),
 /* 20 */
@@ -15596,7 +15635,7 @@ module.exports = __webpack_require__(21).createHash
 /* 21 */
 /***/ (function(module, exports) {
 
-module.exports = __webpack_require__(7);
+module.exports = __webpack_require__(4);
 
 /***/ }),
 /* 22 */
@@ -15862,7 +15901,7 @@ exports.shr64_lo = shr64_lo;
 /* 23 */
 /***/ (function(module, exports) {
 
-module.exports = __webpack_require__(12);
+module.exports = __webpack_require__(9);
 
 /***/ }),
 /* 24 */
@@ -27911,7 +27950,7 @@ module.exports = coder;
 /* 82 */
 /***/ (function(module, exports) {
 
-module.exports = __webpack_require__(26);
+module.exports = __webpack_require__(12);
 
 /***/ }),
 /* 83 */
@@ -38979,25 +39018,25 @@ module.exports = SolidityEvent;
 /* 140 */
 /***/ (function(module, exports) {
 
-module.exports = __webpack_require__(8);
+module.exports = __webpack_require__(5);
 
 /***/ }),
 /* 141 */
 /***/ (function(module, exports) {
 
-module.exports = __webpack_require__(46);
+module.exports = __webpack_require__(43);
 
 /***/ }),
 /* 142 */
 /***/ (function(module, exports) {
 
-module.exports = __webpack_require__(34);
+module.exports = __webpack_require__(28);
 
 /***/ }),
 /* 143 */
 /***/ (function(module, exports) {
 
-module.exports = __webpack_require__(10);
+module.exports = __webpack_require__(7);
 
 /***/ }),
 /* 144 */
@@ -59790,7 +59829,7 @@ module.exports = function (a) {
 /* 303 */
 /***/ (function(module, exports) {
 
-module.exports = __webpack_require__(144);
+module.exports = __webpack_require__(150);
 
 /***/ }),
 /* 304 */
@@ -89356,53 +89395,7 @@ module.exports = {
 
 /***/ }),
 
-/***/ 190:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-const IPC = __webpack_require__(241);
-
-class IPCModule extends IPC{
-    constructor(){
-        super();
-        //include IPC to make extensible
-        Object.defineProperty(
-            this,
-            'IPC',
-            {
-                enumerable:true,
-                writable:false,
-                value:IPC
-            }
-        )
-    }
-}
-
-module.exports=new IPCModule;
-
-
-/***/ }),
-
-/***/ 193:
-/***/ (function(module, exports, __webpack_require__) {
-
-/**
- * Detect Electron renderer process, which is node, but we should
- * treat as a browser.
- */
-
-if (typeof process === 'undefined' || process.type === 'renderer') {
-  module.exports = __webpack_require__(261);
-} else {
-  module.exports = __webpack_require__(262);
-}
-
-
-/***/ }),
-
-/***/ 225:
+/***/ 224:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -89509,7 +89502,7 @@ module.exports = EventPubSub;
 
 /***/ }),
 
-/***/ 231:
+/***/ 229:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -89527,7 +89520,7 @@ module.exports = function (flag, argv) {
 
 /***/ }),
 
-/***/ 234:
+/***/ 231:
 /***/ (function(module, exports) {
 
 function Queue(asStack){
@@ -89610,22 +89603,22 @@ module.exports=Queue;
 
 /***/ }),
 
-/***/ 239:
+/***/ 240:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-const net = __webpack_require__(38),
-    tls = __webpack_require__(72),
-    EventParser = __webpack_require__(131),
-    Message = __webpack_require__(126),
+const net = __webpack_require__(32),
+    tls = __webpack_require__(70),
+    EventParser = __webpack_require__(133),
+    Message = __webpack_require__(128),
     fs = __webpack_require__(1),
-    Queue = __webpack_require__(234);
+    Queue = __webpack_require__(231);
 
-let Events = __webpack_require__(76);
+let Events = __webpack_require__(74);
 if(process.version[1]>4){
-    Events = __webpack_require__(123);
+    Events = __webpack_require__(124);
 }
 
 let eventParser = new EventParser();
@@ -89875,22 +89868,22 @@ module.exports=Client;
 
 /***/ }),
 
-/***/ 240:
+/***/ 241:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-const net = __webpack_require__(38),
-    tls = __webpack_require__(72),
+const net = __webpack_require__(32),
+    tls = __webpack_require__(70),
     fs = __webpack_require__(1),
-    dgram = __webpack_require__(186),
-    EventParser = __webpack_require__(131),
-    Message = __webpack_require__(126);
+    dgram = __webpack_require__(148),
+    EventParser = __webpack_require__(133),
+    Message = __webpack_require__(128);
 
-let Events = __webpack_require__(76);
+let Events = __webpack_require__(74);
 if(process.version[1]>4){
-    Events = __webpack_require__(123);
+    Events = __webpack_require__(124);
 }
 
 let eventParser = new EventParser();
@@ -90285,15 +90278,15 @@ module.exports=Server;
 
 /***/ }),
 
-/***/ 241:
+/***/ 242:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-const Defaults = __webpack_require__(130),
-    Client = __webpack_require__(239),
-    Server = __webpack_require__(240),
+const Defaults = __webpack_require__(132),
+    Client = __webpack_require__(240),
+    Server = __webpack_require__(241),
     util = __webpack_require__(3);
 
 class IPC{
@@ -90630,14 +90623,7 @@ module.exports=IPC;
 
 /***/ }),
 
-/***/ 26:
-/***/ (function(module, exports) {
-
-module.exports = require("http");
-
-/***/ }),
-
-/***/ 261:
+/***/ 269:
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -90646,7 +90632,7 @@ module.exports = require("http");
  * Expose `debug()` as the module.
  */
 
-exports = module.exports = __webpack_require__(141);
+exports = module.exports = __webpack_require__(142);
 exports.log = log;
 exports.formatArgs = formatArgs;
 exports.save = save;
@@ -90839,14 +90825,14 @@ function localstorage() {
 
 /***/ }),
 
-/***/ 262:
+/***/ 270:
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
  * Module dependencies.
  */
 
-var tty = __webpack_require__(83);
+var tty = __webpack_require__(81);
 var util = __webpack_require__(3);
 
 /**
@@ -90855,7 +90841,7 @@ var util = __webpack_require__(3);
  * Expose `debug()` as the module.
  */
 
-exports = module.exports = __webpack_require__(141);
+exports = module.exports = __webpack_require__(142);
 exports.init = init;
 exports.log = log;
 exports.formatArgs = formatArgs;
@@ -90870,7 +90856,7 @@ exports.useColors = useColors;
 exports.colors = [ 6, 2, 3, 4, 5, 1 ];
 
 try {
-  var supportsColor = __webpack_require__(172);
+  var supportsColor = __webpack_require__(178);
   if (supportsColor && supportsColor.level >= 2) {
     exports.colors = [
       20, 21, 26, 27, 32, 33, 38, 39, 40, 41, 42, 43, 44, 45, 56, 57, 62, 63, 68,
@@ -91032,6 +91018,13 @@ exports.enable(load());
 
 /***/ }),
 
+/***/ 28:
+/***/ (function(module, exports) {
+
+module.exports = require("https");
+
+/***/ }),
+
 /***/ 3:
 /***/ (function(module, exports) {
 
@@ -91039,49 +91032,56 @@ module.exports = require("util");
 
 /***/ }),
 
-/***/ 34:
-/***/ (function(module, exports) {
-
-module.exports = require("https");
-
-/***/ }),
-
-/***/ 38:
+/***/ 32:
 /***/ (function(module, exports) {
 
 module.exports = require("net");
 
 /***/ }),
 
-/***/ 46:
-/***/ (function(module, exports) {
-
-module.exports = require("child_process");
-
-/***/ }),
-
-/***/ 47:
-/***/ (function(module, exports) {
-
-module.exports = require("buffer");
-
-/***/ }),
-
-/***/ 7:
+/***/ 4:
 /***/ (function(module, exports) {
 
 module.exports = require("crypto");
 
 /***/ }),
 
-/***/ 72:
+/***/ 43:
+/***/ (function(module, exports) {
+
+module.exports = require("child_process");
+
+/***/ }),
+
+/***/ 44:
+/***/ (function(module, exports) {
+
+module.exports = require("buffer");
+
+/***/ }),
+
+/***/ 5:
+/***/ (function(module, exports) {
+
+module.exports = require("url");
+
+/***/ }),
+
+/***/ 7:
+/***/ (function(module, exports) {
+
+module.exports = require("os");
+
+/***/ }),
+
+/***/ 70:
 /***/ (function(module, exports) {
 
 module.exports = require("tls");
 
 /***/ }),
 
-/***/ 76:
+/***/ 74:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -91232,7 +91232,21 @@ module.exports=EventPubSub;
 
 /***/ }),
 
-/***/ 78:
+/***/ 81:
+/***/ (function(module, exports) {
+
+module.exports = require("tty");
+
+/***/ }),
+
+/***/ 9:
+/***/ (function(module, exports) {
+
+module.exports = require("assert");
+
+/***/ }),
+
+/***/ 93:
 /***/ (function(module, exports) {
 
 /**
@@ -91388,20 +91402,6 @@ function plural(ms, n, name) {
   return Math.ceil(ms / n) + ' ' + name + 's';
 }
 
-
-/***/ }),
-
-/***/ 8:
-/***/ (function(module, exports) {
-
-module.exports = require("url");
-
-/***/ }),
-
-/***/ 83:
-/***/ (function(module, exports) {
-
-module.exports = require("tty");
 
 /***/ })
 
